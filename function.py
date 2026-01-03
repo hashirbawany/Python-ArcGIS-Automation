@@ -1,22 +1,6 @@
-#Section 1 : Setting things up
-
-#1.1: initializing API
 import arcpy
 
-#1.2: loading project & file paths
-aprx = arcpy.mp.ArcGISProject(r"C:\Users\Public\ArcGis project\ArcGis project.aprx")
-
-arcpy.env.overwriteOutput = True 
-original_data_path = r"C:\Users\hashi\OneDrive - Higher Education Commission\Desktop\Uchicago Classes\Quarter 4\GIS\Final Project\Final\Shapefiles\harris_underinsurance.shp"
-copy_data_path = r"C:\Users\Public\ArcGis project\harris_underinsurance_edit.shp"
-
-arcpy.management.CopyFeatures(original_data_path, copy_data_path)
-
-#1.3: deleting all previous maps
-for m in aprx.listMaps():
-    aprx.deleteItem(m)
-
-#1.4: Defining function to create map objects
+# Defining function to create map objects
 def create_single_map(
     map_name,
     layer_path,
@@ -67,7 +51,9 @@ def create_single_map(
     layer.symbology = sym
     return m, layer
 
-#1.5: Defining function to create layouts
+
+
+# Defining function to create layouts
 def create_standard_layout(
     map_obj,
     layer,
@@ -181,95 +167,5 @@ def create_standard_layout(
     )
 
     return layout
-
-
-
-#Section 2: Creating maps
-
-#2.1: creating map for locating risk zones
-
-risk_map = {
-    0: "No Rating",
-    1: "Very Low",
-    2: "Relatively Low",
-    3: "Relatively Moderate",
-    4: "Relatively High",
-    5: "Very High"
-}
-
-m,layer = create_single_map(
-    "risk_map",
-    copy_data_path,
-    "harris_underinsurance",
-    "UniqueValueRenderer",
-    "RFLD_RIS_1" ,
-    "Yellow-Green-Blue (6 Classes)",
-    risk_map )
-
-
-
-#2.2: Creating map for insurance gaps
-insurance_map = {
-    -1: "No Gap",
-    0: "Low Gap",
-    1: "Medium Gap",
-    2: "High Gap"
-}
-
-
-n,layer2 = create_single_map(
-    "insurance_map",
-    copy_data_path,
-    "harris_underinsurance",
-    "UniqueValueRenderer",
-    "jenks_clas" ,
-    "Yellow-Green-Blue (4 Classes)",
-    insurance_map )
-
-
-
-#Section 3: Creating Layouts
-
-#3.1 removing all layouts
-for layout in aprx.listLayouts():
-    aprx.deleteItem(layout)
-
-
-
-#3.2: Creating layout for risk
-risk_layout  = create_standard_layout(
-    m,
-    layer,
-    "risk_map",
-    "Figure 1: Flood Risk Index in Harris County, Texas")
-
-
-
-#3.3: Creating layout for insurance gap
-insurance_layout = create_standard_layout(
-    n,
-    layer2,
-    "insurance_layout",
-    "Figure 2: Insurance Gap in Harris County, Texas" )
-
-
-
-#Section 4: Saving & Exporting
-#4.1: Saving Project
-aprx.save()
-
-#4.2: Exporting layout as png
-output_lyt1 = r"C:\Users\Public\ArcGis project\layout_1.png"
-output_lyt2 = r"C:\Users\Public\ArcGis project\layout_2.png"
-
-risk_layout.exportToPNG(
-    output_lyt1,
-    resolution=300
-)
-
-insurance_layout.exportToPNG(
-    output_lyt2,
-    resolution=300
-)
 
 
