@@ -1,4 +1,4 @@
-# ArcGIS Pro Map and Layout Automation
+# ArcGIS Pro Map and Layout Programming
 
 This repository contains reusable Python functions for programmatic creation
 and control of maps and layouts in ArcGIS Pro using the ArcPy API.
