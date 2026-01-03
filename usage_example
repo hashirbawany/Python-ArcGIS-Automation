@@ -1,7 +1,4 @@
 """
-Example script demonstrating how to use the map and layout automation functions
-to generate standardized ArcGIS Pro maps and layouts.
-
 Before running this script, create an empty ArcGIS Pro project (.aprx).
 """
 
